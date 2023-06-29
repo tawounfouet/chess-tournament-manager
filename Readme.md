@@ -2,10 +2,15 @@
 
 Ce logiciel permet de gérer des tournois d'échecs en suivant les règles du jeu d'échecs classique.
 
-## Description
+## A propos du tournois
 
+`Nombre de participants`: Le tournoi pourra être ouvert à un nombre précis de participants, comme 8, 10, 12 ou plus, afin de déterminer le nombre de rondes nécessaires.
 
+`Durée des parties`: Chaque partie peut être chronométrée avec une durée spécifique allouée à chaque joueur. Par exemple, chaque joueur pourrait avoir 60 minutes pour l'ensemble de la partie.
 
+`Système de notation`: Les points seront attribués en fonction des résultats des parties. Par exemple, une victoire peut valoir 1 point, une partie nulle peut valoir 0,5 point pour chaque joueur et une défaite peut ne pas rapporter de point (c-a-d O point).
+
+`Appariements`: Chaque joueur rencontre tous les autres participants une fois. Il faudra se   s'assurer que chaque joueur rencontre un adversaire différent à chaque ronde.
 
 ## Installation
 
