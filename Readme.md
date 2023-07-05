@@ -1,5 +1,11 @@
 # Logiciel de Gestions de tournois d'échecs
 
+
+<p align="center">
+  <img src="https://user.oc-static.com/upload/2020/09/22/16007793690358_chess%20club-01.png" alt="Logo du logiciel de gestion de tournois d'échecs"/>
+
+<!-- ![Logo](https://user.oc-static.com/upload/2020/09/22/16007793690358_chess%20club-01.png) -->
+
 Ce logiciel permet de gérer des tournois d'échecs en suivant les règles du jeu d'échecs classique.
 
 ## A propos du tournois
