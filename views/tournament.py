@@ -24,8 +24,9 @@ class TournamentView:
         name = input("Name: ")
         location = input("Location: ")
         date = input("Date: ")
+        rounds = input("Number of rounds: ")
 
-        return {"name": name, "location": location, "date": date}
+        return {"name": name, "location": location, "date": date, "rounds": rounds}
 
     def display_tournaments(self, tournaments):
         """Display a list of tournaments"""

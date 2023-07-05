@@ -1,34 +1,60 @@
-from models import Player, Tournament, Match
+from models.tournament import Tournament
+from views.tournament import TournamentView
+
+from models.player import Player
+from views.player import PlayerView
 
 
 class TournamentController:
+    """Tournament controller class"""
+
     def __init__(self):
-        self.tournament = None
+        self.view = TournamentView()
+        self.model = Tournament
 
-    def create_tournament(self, name, location, start_date, end_date):
-        self.tournament = Tournament(name, location, start_date, end_date)
-        self.tournament.save_to_db()
+    def handle_tournament_menu(self):
+        """Handle tournament menu"""
 
-    def add_player(self, first_name, last_name, date_of_birth):
-        player = Player(first_name, last_name, date_of_birth)
-        player.save_to_db()
-        self.tournament.add_player(player)
+        while True:
+            choice = self.view.display_tournament_menu()
 
-    def generate_matches(self):
-        # Implement your matching algorithm here
-        for player1, player2 in match_pairs:
-            match = Match(player1, player2)
-            self.tournament.add_match(match)
+            if choice == "1":
+                self.create_tournament()
+            elif choice == "2":
+                self.display_tournaments()
+            elif choice == "3":
+                break
 
-    def enter_match_results(self, results):
-        for index, match in enumerate(self.tournament.matches):
-            score_player1, score_player2 = results[index]
-            match.record_result(score_player1, score_player2)
+    def create_tournament(self):
+        """Create a new tournament"""
 
-    def display_players(self):
-        for player in self.tournament.get_players():
-            print(player.get_full_name())
+        tournament_info = self.view.get_tournament_info()
+        tournament = self.model(**tournament_info)
+        tournament.save_to_db()
+
+        print("\nTournament created successfully.")
 
     def display_tournaments(self):
-        # Implement display of tournaments
-        pass
+        """Display all tournaments"""
+
+        tournaments = self.model.get_all_tournaments()
+        self.view.display_tournaments(tournaments)
+
+    def add_player_to_tournament(self, tournament):
+        player_id = self.view.get_player_id()
+        player = Player.get_player_by_id(player_id)
+
+        if player is not None:
+            # tournament.add_player(player)
+            self.players.append(player)
+            self.view.display_message(
+                f"Player {player.full_name} added to the tournament."
+            )
+        else:
+            self.view.display_message("Player not found.")
+
+
+if __name__ == "__main__":
+    """Test PlayerController class"""
+    tc = TournamentController()
+    tc.handle_tournament_menu()

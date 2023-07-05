@@ -3,16 +3,22 @@ from tinydb import TinyDB, Query
 db_tournaments = TinyDB("data/tournaments.json", indent=4)
 
 
+# 08 joeurs
+# Chaque joueur fera 04 matchs
 class Tournament:
     """Tournament class"""
 
     tournaments_table = db_tournaments.table("tournaments")
 
-    def __init__(self, name, location, date, rounds):
+    def __init__(self, name, location, date, rounds=4):
         self.name = name
         self.location = location
         self.date = date
         self.rounds = rounds
+        self.players = []
+
+    def add_player(self, player):
+        self.players.append(player)
 
     def save_to_db(self):
         """Save tournament data to database"""

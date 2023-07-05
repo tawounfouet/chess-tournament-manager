@@ -34,6 +34,10 @@ class Round:
             }
             rounds_table.insert(round_data)
 
+    def handle_result():
+        # parcourir chaque match et demander qui a gagné puis maj des scores
+        pass
+
 
 class Match:
     def __init__(self, player1, player2):
