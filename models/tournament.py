@@ -10,12 +10,25 @@ class Tournament:
 
     tournaments_table = db_tournaments.table("tournaments")
 
-    def __init__(self, name, location, date, rounds=4):
+    def __init__(
+        self,
+        name,
+        location,
+        start_date,
+        end_date,
+        nb_rounds=4,
+        actual_round=0,
+        players=[],
+        description="",
+    ):
         self.name = name
         self.location = location
-        self.date = date
-        self.rounds = rounds
-        self.players = []
+        self.start_date = start_date
+        self.end_date = end_date
+        self.rounds = nb_rounds
+        self.actual_round = actual_round
+        self.players = players
+        self.description = description
 
     def add_player(self, player):
         self.players.append(player)

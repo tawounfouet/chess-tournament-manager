@@ -9,7 +9,14 @@ class Player:
 
     players_table = db_players.table("players")
 
-    def __init__(self, first_name, last_name, date_of_birth, player_id, score=0):
+    def __init__(
+        self,
+        first_name,
+        last_name,
+        date_of_birth,
+        player_id="AB" + input("entrez 05 chiffres: "),
+        score=0,
+    ):
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth
