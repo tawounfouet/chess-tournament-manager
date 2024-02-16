@@ -2,6 +2,16 @@
 """Création de la classe PlayerController qui va gérer les actions sur les joueurs
  à partir de la classe Player et passer les informations à la classe PlayerView"""
 
+import sys
+sys.path.append("/Users/awf/Projects/openclassrooms/DA. Python _ OCR/P4 - POO - Jeu d'echecs/chess_tournament")
+
+
+from models.player import Player
+
+# Your remaining code goes here...
+
+
+
 from models.player import Player
 from views.player import PlayerView
 

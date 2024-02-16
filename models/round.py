@@ -1,70 +1,107 @@
-# from .match import Match
-
 from tinydb import TinyDB, Query
+from datetime import datetime
 
-db_rounds = TinyDB("data/rounds.json")
-
+db_tournament = TinyDB("../data/tournaments.json", indent=4)
 
 class Round:
-    def __init__(self, round_number):
+    """Round class"""
+
+    round_table = db_tournament.table("rounds")
+
+
+    def __init__(self,round_number, name, start_time=None, end_time=None, matches=None):
         self.round_number = round_number
-        self.matches = []
+        self.name = name
+        self.matches = matches or []
+        self.start_time = start_time or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.end_time = end_time
+        #self.db = TinyDB('data/rounds_db.json')  # Initialise la base de données TinyDB
+        #self.round_table = self.db.table('rounds')  # Crée une table pour stocker les rounds
 
-    def add_match(self, player1, player2):
-        match = Match(player1, player2)
-        self.matches.append(match)
-
-    def display_information(self):
-        print(f"Round Number: {self.round_number}")
-        print("Matches:")
-        for match in self.matches:
-            match.display_information()
-            # print(match)
 
     def save_to_db(self):
-        rounds_table = db_rounds.table("rounds")
-        rounds_query = Query()
-        existing_round = rounds_table.get(
-            rounds_query.round_number == self.round_number
-        )
+        """Save round data to database"""
+        round_query = Query()
+        existing_round = self.round_table.get(round_query.round_number == self.round_number)
+        round_data = {
+            "round_number": self.round_number,
+            "name": self.name,
+            "matches": self.matches,
+            "start_time": self.start_time,
+            "end_time": self.end_time
+        }
+
         if existing_round is None:
-            round_data = {
-                "round_number": self.round_number,
-                #'matches': [match.to_dict() for match in self.matches]
-            }
-            rounds_table.insert(round_data)
-
-    def handle_result():
-        # parcourir chaque match et demander qui a gagné puis maj des scores
-        pass
-
-
-class Match:
-    def __init__(self, player1, player2):
-        self.player1 = player1
-        self.player2 = player2
-        self.result = None
-
-    def record_result(self, score_player1, score_player2):
-        self.result = (score_player1, score_player2)
-
-    def display_information(self):
-        print(f"{self.player1} vs  {self.player2}")
-        if self.result:
-            print(f"Result: {self.result[0]} - {self.result[1]}")
+            self.round_table.insert(round_data)
+            print("\nRound saved successfully in DB.")
         else:
-            print("Result: N/A")
+            print("\nRound already exists in DB.")
+
+    def mark_as_finished(self):
+        """Mark the round as finished and update end time"""
+        self.end_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.save_to_db()
+
+        
+    @classmethod
+    def get_all_rounds(cls):
+        """Retrieve all rounds from the database"""
+        round_data = cls.round_table.all()
+        rounds = [cls(**data) for data in round_data]
+        return rounds
 
 
+# test round.py using if __name__ == "__main__"
+    
 if __name__ == "__main__":
-    match1 = Match("player1", "player2")
-    match1.record_result(1, 0)
-
-    match2 = Match("player3", "player4")
-    match2.record_result(1, 2)
-
-    round1 = Round(1)
-    round1.add_match("player1", "player2")
-    round1.add_match("player3", "player4")
+    round1 = Round(1, "Round 1")
     round1.save_to_db()
-    round1.display_information()
+    round2 = Round(2, "Round 2")
+    round2.save_to_db()
+    round3 = Round(3, "Round 3")
+    round3.save_to_db()
+    round4 = Round(4, "Round 4")
+    round4.save_to_db()
+    round5 = Round(5, "Round 5")
+    round5.save_to_db()
+    round6 = Round(6, "Round 6")
+    round6.save_to_db()
+    round7 = Round(7, "Round 7")
+    round7.save_to_db()
+    round8 = Round(8, "Round 8")
+    round8.save_to_db()
+    round9 = Round(9, "Round 9")
+    round9.save_to_db()
+    round10 = Round(10, "Round 10")
+    round10.save_to_db()
+    round11 = Round(11, "Round 11")
+    round11.save_to_db()
+    round12 = Round(12, "Round 12")
+    round12.save_to_db()
+    round13 = Round(13, "Round 13")
+    round13.save_to_db()
+    round14 = Round(14, "Round 14")
+    round14.save_to_db()
+    round15 = Round(15, "Round 15")
+    round15.save_to_db()
+    round16 = Round(16, "Round 16")
+    round16.save_to_db()
+    round17 = Round(17, "Round 17")
+    round17.save_to_db()
+    round18 = Round(18, "Round 18")
+    round18.save_to_db()
+    round19 = Round(19, "Round 19")
+    round19.save_to_db()
+    round20 = Round(20, "Round 20")
+    round20.save_to_db()
+    round21 = Round(21, "Round 21")
+    round21.save_to_db()
+    round22 = Round(22, "Round 22")
+    round22.save_to_db()
+    round23 = Round(23, "Round 23")
+    round23.save_to_db()
+    round24 = Round(24, "Round 24")
+    round24.save_to_db()
+    round25 = Round(25, "Round 25")
+    round25.save_to_db()
+

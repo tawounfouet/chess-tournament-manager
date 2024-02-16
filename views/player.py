@@ -42,24 +42,11 @@ class PlayerView:
         player_id = input("Enter player's id: ")
         return player_id
 
-    def get_new_score(self):
-        new_score = input("Enter player's new score: ")
-        return new_score
 
     def display_message(self, message):
         print(message)
 
-    # def display_players(self, players):
-    #     """Display the list of players"""
 
-    #     if players:
-    #         print("Lis of Players:")
-    #         for player in players:
-    #             print(
-    #                 f"ID: {player.player_id} | Name: {player.first_name} {player.last_name}"
-    #             )
-    #     else:
-    #         print("No players found.")
 
     def display_players(self, players):
         """Display the list of players"""
@@ -101,4 +88,26 @@ class PlayerView:
 
 
 if __name__ == "__main__":
-    """Test PlayerView class"""
+ """Test PlayerView class"""
+
+view = PlayerView()
+    
+# Test display_player_menu
+print(view.display_player_menu())
+
+# Test get_infos_player
+print(view.get_infos_player())
+
+# # Test get_player_id
+# print(view.get_player_id())
+
+# # Test display_message
+# view.display_message("This is a test message.")
+
+# # Test display_players
+# from models.player import Player
+# players = [
+#     Player("John", "Doe", "1990-01-01", "1", 0),
+#     Player("Jane", "Doe", "1995-01-01", "2", 0),
+# ]
+# view.display_players(players)
