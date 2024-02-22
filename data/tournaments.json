@@ -1,17 +1,6 @@
 {
     "tournaments": {
         "1": {
-            "tournament_id": "1",
-            "name": "Tournois 1",
-            "location": "Paris",
-            "start_date": "06/07/2023",
-            "end_date": "07/07/2023",
-            "nb_rounds": "4",
-            "actual_round": 0,
-            "players": [],
-            "description": "Tournois d\u00e9partemental d'echecs"
-        },
-        "2": {
             "tournament_id": "123",
             "name": "Tournament 1",
             "location": "Paris",
@@ -22,7 +11,7 @@
             "players": [],
             "description": "Tournament 1 description"
         },
-        "3": {
+        "2": {
             "tournament_id": "456",
             "name": "Tournament 2",
             "location": "Lyon",
@@ -39,175 +28,14 @@
             "round_number": 1,
             "name": "Round 1",
             "matches": [],
-            "start_time": "2023-07-19 23:19:43",
+            "start_time": "2024-02-21 18:57:39",
             "end_time": null
         },
         "2": {
             "round_number": 2,
             "name": "Round 2",
             "matches": [],
-            "start_time": "2023-07-19 23:20:04",
-            "end_time": null
-        },
-        "3": {
-            "round_number": 3,
-            "name": "Round 3",
-            "matches": [],
-            "start_time": "2023-07-19 23:20:22",
-            "end_time": null
-        },
-        "4": {
-            "round_number": 4,
-            "name": "Round 4",
-            "matches": [],
-            "start_time": "2023-07-19 23:20:28",
-            "end_time": null
-        },
-        "5": {
-            "round_number": 5,
-            "name": "Round 5",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "6": {
-            "round_number": 6,
-            "name": "Round 6",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "7": {
-            "round_number": 7,
-            "name": "Round 7",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "8": {
-            "round_number": 8,
-            "name": "Round 8",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "9": {
-            "round_number": 9,
-            "name": "Round 9",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "10": {
-            "round_number": 10,
-            "name": "Round 10",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "11": {
-            "round_number": 11,
-            "name": "Round 11",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "12": {
-            "round_number": 12,
-            "name": "Round 12",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "13": {
-            "round_number": 13,
-            "name": "Round 13",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "14": {
-            "round_number": 14,
-            "name": "Round 14",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "15": {
-            "round_number": 15,
-            "name": "Round 15",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "16": {
-            "round_number": 16,
-            "name": "Round 16",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "17": {
-            "round_number": 17,
-            "name": "Round 17",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "18": {
-            "round_number": 18,
-            "name": "Round 18",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "19": {
-            "round_number": 19,
-            "name": "Round 19",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "20": {
-            "round_number": 20,
-            "name": "Round 20",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "21": {
-            "round_number": 21,
-            "name": "Round 21",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "22": {
-            "round_number": 22,
-            "name": "Round 22",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "23": {
-            "round_number": 23,
-            "name": "Round 23",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "24": {
-            "round_number": 24,
-            "name": "Round 24",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
-            "end_time": null
-        },
-        "25": {
-            "round_number": 25,
-            "name": "Round 25",
-            "matches": [],
-            "start_time": "2024-02-16 01:27:10",
+            "start_time": "2024-02-21 19:11:16",
             "end_time": null
         }
     }

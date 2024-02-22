@@ -1,5 +1,9 @@
 import sys
-sys.path.append("/Users/awf/Projects/openclassrooms/DA. Python _ OCR/P4 - POO - Jeu d'echecs/chess_tournament")
+import os
+
+# Define the root directory of the project
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(ROOT_DIR)
 
 """Round controller. """
 from models.player import Player
@@ -31,7 +35,7 @@ class RoundController:
             elif choice == "2":
                 self.display_rounds()
             elif choice == "3":
-                self.generate_round_matches()
+                self.generate_round_matches(current_round=round)
             elif choice == "4":
                 self.update_scores()
             elif choice == "5":
@@ -49,8 +53,8 @@ class RoundController:
 
         self.view.display_message(f"Round créé avec succès.")
 
-        # génération des matches pour le round en cours en paramètre
-        #self.generate_match_round(current_round=round)
+        # Pass the newly created round as current_round argument
+        self.generate_round_matches(current_round=round)
 
     
 

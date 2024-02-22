@@ -1,6 +1,6 @@
 from tinydb import TinyDB, Query
 
-db_tournaments = TinyDB("../data/tournaments.json", indent=4)
+db_tournaments = TinyDB("data/tournaments.json", indent=4)
 
 
 class Tournament:
@@ -84,6 +84,7 @@ if __name__ == "__main__":
         "Paris",
         "2021-01-01",
         "2021-01-05",
+        nb_rounds=4,  # Include the nb_rounds argument
         description="Tournament 1 description",
     )
     tournament1.save_to_db()
@@ -93,6 +94,7 @@ if __name__ == "__main__":
         "Lyon",
         "2021-02-01",
         "2021-02-05",
+        nb_rounds=4,  # Include the nb_rounds argument
         description="Tournament 2 description",
     )
     tournament2.save_to_db()

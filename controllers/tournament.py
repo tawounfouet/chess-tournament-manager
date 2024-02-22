@@ -63,24 +63,43 @@ class TournamentController:
             elif choice == "8":
                 self.display_tournament_results()
             elif choice == "9":
+                # go back to main menu
                 exit_requested = True
+               
             else:
                 self.view.display_message("Invalid choice. Please try again.")
 
     def create_tournament(self):
         tournament_data = self.view.get_tournament_data()
         self.model = Tournament(**tournament_data)
+
+        # add player to tournament
+
+
         self.model.save_to_db()
 
         self.view.display_message(f"Tournament {self.model.name} created successfully.")
 
+    # add player to tournament
+    # display de la liste des joueurs
+        # obtenir les identifiants des joueurs
+        # transformer les identifiants en objets joueurs
+        # les ajouter au tournois
+        # retourner une liste de joueurs
+        # ajouter les joueurs au tournois
+
     def first_round(self):
         """Generate matches for the first round"""
-        self.round_controller.generate_round_matches(self.model, self.model.current_round)
+        current_round = 1
+        self.round_controller.generate_round_matches(self.model, current_round)
 
     def next_round(self):
         """Generate matches for the next round"""
-        self.round_controller.generate_round_matches(self.model, self.model.current_round)
+        if len(self.model.rounds_results) < self.model.nb_rounds:
+            current_round = len(self.model.rounds_results) + 1
+            self.round_controller.generate_round_matches(self.model, current_round)
+        else:
+            self.view.display_message("All rounds have been completed.")
 
     
     def get_scores(self):
