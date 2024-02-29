@@ -9,7 +9,6 @@ class ViewApp:
             print(Fore.GREEN + "\nWelcome to the Chess Tournament Manager\n".center(120, "-"))
             print(Fore.YELLOW + "\n1. Tournament menu")
             print("2. Player menu")
-            print("3. Round menu")
             print("4. Quit")
             print(Style.RESET_ALL)
 

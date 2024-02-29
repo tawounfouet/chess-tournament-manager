@@ -1,24 +1,26 @@
 from tabulate import tabulate
 from colorama import Fore, Style
+from tinydb import TinyDB, Query
 
 class TournamentView:
+    def __init__(self):
+        self.db_tournaments = TinyDB("data/tournaments.json", indent=4)
+
     def display_tournament_menu(self):
         """Display tournament main menu and return user's choice"""
         while True:
             print("\n----- Tournament Menu -----\n")
-            print("1. " + Fore.BLUE + "Display Tournaments" + Style.RESET_ALL)
-            print("2. " + Fore.BLUE + "Create Tournament" + Style.RESET_ALL)
-            print("3. " + Fore.BLUE + "Display Players" + Style.RESET_ALL)
-            print("4. " + Fore.BLUE + "Generate Round 1 Matches" + Style.RESET_ALL)
-            print("5. " + Fore.BLUE + "Generate Next Round Matches" + Style.RESET_ALL)
-            print("6. " + Fore.BLUE + "Start Tournament" + Style.RESET_ALL)
-            print("7. " + Fore.BLUE + "Update Player Scores" + Style.RESET_ALL)
-            print("8. " + Fore.BLUE + "Display Tournament Results" + Style.RESET_ALL)
-            print("9. " + Fore.BLUE + "Exit" + Style.RESET_ALL)
+            print("1. " + Fore.BLUE + "Create Tournament" + Style.RESET_ALL)
+            print("2. " + Fore.BLUE + "Display Tournaments" + Style.RESET_ALL)
+            print("3. " + Fore.BLUE + "Display a Tournament Info" + Style.RESET_ALL)
+            print("4. " + Fore.BLUE + "Display the list of rounds for a tournament" + Style.RESET_ALL)
+    
+            
+            print("6. " + Fore.BLUE + "Exit" + Style.RESET_ALL)
 
             choice = input("\nEnter your choice: ")
 
-            if choice in ["1", "2", "3", "4", "5"]:
+            if choice in ["1", "2", "3", "4", "5", "6"]:
                 return choice
             else:
                 print("Invalid choice. Please try again.")
@@ -29,7 +31,8 @@ class TournamentView:
         location = input("Enter tournament location: ")
         start_date = input("Enter tournament start date: ")
         end_date = input("Enter tournament end date: ")
-        nb_rounds = input("Enter the number of rounds: ")
+        # nb_rounds = int(input("Enter the number of rounds: "))  # Convert input to integer
+        # nb_of_players = int(input("Enter the number of players: "))  # Convert input to integer
         description = input("Enter tournament description: ")
 
         details = {
@@ -38,7 +41,7 @@ class TournamentView:
             "location": location,
             "start_date": start_date,
             "end_date": end_date,
-            "nb_rounds": nb_rounds,
+            #"nb_rounds": nb_rounds,
             "description": description,
         }
 
@@ -54,22 +57,25 @@ class TournamentView:
             "ID",
             "Name",
             "Location",
-            "Start Date",
-            "End Date",
+            #"Start Date",
+            #"End Date",
+            "Number of Players",
             "Number of Rounds",
-            "Actual Round",
-            "Description",
+            #"Current Round",
+            #"Description",
         ]
+
         tournament_data = [
             [
                 tournament.tournament_id,
                 tournament.name,
                 tournament.location,
-                tournament.start_date,
-                tournament.end_date,
-                tournament.nb_rounds,
-                tournament.actual_round,
-                tournament.description,
+               #tournament.start_date,
+                #tournament.end_date,
+                tournament.number_of_players,
+                tournament.number_of_rounds,
+                #tournament.current_round,
+                #tournament.description,
             ]
             for tournament in tournaments
         ]
@@ -85,29 +91,75 @@ class TournamentView:
                 Fore.RED + tournament_id + Style.RESET_ALL,
                 name,
                 location,
-                start_date,
-                end_date,
-                nb_rounds,
-                actual_round,
-                description,
+                #start_date,
+                #end_date,
+                num_players,
+                num_rounds,
+                #nb_rounds,
+                #actual_round,
+                #description,
             ]
             for (
                 tournament_id,
                 name,
                 location,
-                start_date,
-                end_date,
-                nb_rounds,
-                actual_round,
-                description,
+                #start_date,
+                # end_date,
+                num_players,
+                num_rounds,
+                #nb_rounds,
+                #actual_round,
+                #description,
             ) in tournament_data
         ]
 
         print(tabulate(colorized_tournament_data, headers=colorized_headers))
 
+
+    def display_tournament_info(self, tournament_id):
+        """Display all information about a tournament based on its ID"""
+        tournaments_table = self.db_tournaments.table("tournaments")
+        tournament_data = tournaments_table.get(Query().tournament_id == tournament_id)
+
+        if not tournament_data:
+            print(f"Tournament with ID {tournament_id} not found.")
+            return
+
+        headers = ["Attribute", "Value"]
+        data = [
+            ["Tournament ID", tournament_data["tournament_id"]],
+            ["Name", tournament_data["name"]],
+            ["Location", tournament_data["location"]],
+            ["Start Date", tournament_data["start_date"]],
+            ["End Date", tournament_data["end_date"]],
+            ["Status", tournament_data["status"]],
+            ["Description", tournament_data["description"]],
+            ["Players", "\n".join(tournament_data["players"])],
+            ["Rounds", "\n".join([round_info["name"] for round_info in tournament_data["rounds"]])]
+        ]
+
+        colorized_data = [
+            [Fore.GREEN + row[0] + Style.RESET_ALL, row[1]] for row in data
+        ]
+
+        print(tabulate(colorized_data, headers=headers, tablefmt="fancy_grid"))
+
+
     def get_player_id(self):
         player_id = input("Enter player's id: ")
         return player_id
+    
+    def get_player_ids_to_add(self):
+        # rahouter le nombre de joueur en parametre et plutot faire une boucle for pour demander le nombre de joueur
+        """Prompt user to enter player IDs to add to the tournament"""
+        player_ids = []
+        while True:
+            player_id = input("Enter player ID to add (press Enter to finish): ")
+            if not player_id:  # Check if user pressed Enter without entering an ID
+                break
+            player_ids.append(player_id)
+        return player_ids
+    
 
     def display_message(self, message):
         print(message)
@@ -149,6 +201,43 @@ class TournamentView:
 
         print(tabulate(colorized_player_data, headers=colorized_headers))
 
+    
+
+    def display_rounds_list(self, tournament_id):
+        """Display the list of rounds and matches for a tournament."""
+        db_tournaments = TinyDB("data/tournaments.json", indent=4)
+        tournaments_table = db_tournaments.table("tournaments")
+
+        # Recherche du tournoi par son identifiant
+        tournament_record = tournaments_table.get(doc_id=tournament_id)
+        if tournament_record:
+            rounds = tournament_record.get('rounds', [])
+            if rounds:
+                print(Fore.CYAN + f"Rounds for Tournament {tournament_record['name']}:")
+                round_data = []
+                for round_info in rounds:
+                    round_data.append([round_info['name'], round_info['start_date'], round_info['end_date'], round_info['status']])
+                
+                headers = ["Round Name", "Start Date", "End Date", "Status"]
+                print(tabulate(round_data, headers=headers, tablefmt="pretty"))
+                
+                for round_info in rounds:
+                    matches = round_info.get('matches', [])
+                    if matches:
+                        print(Fore.GREEN + f"Matches for Round {round_info['name']}:")
+                        match_data = []
+                        for match_info in matches:
+                            match_data.append([match_info['player_1'], match_info['player_2'], match_info['p1_score'], match_info['p2_score']])
+                        match_headers = ["Player 1", "Player 2", "Player 1 Score", "Player 2 Score"]
+                        print(tabulate(match_data, headers=match_headers, tablefmt="pretty"))
+                    else:
+                        print(Fore.RED + "No matches found for this round.")
+            else:
+                print(Fore.RED + "No rounds found for this tournament.")
+        else:
+            print(Fore.RED + "Tournament not found.")
+
+
     def display_round_matches(self, round_number, matches):
         """Display the matches for a round"""
         print(f"\n--- Round {round_number} Matches ---")
@@ -188,13 +277,14 @@ class TournamentView:
 
 
 if __name__ == "__main__":
-    tournament_view = TournamentView()
-    #tournament_view.display_tournament_menu()
-    #tournament_view.get_tournament_data()
-    tournament_view.display_tournaments()
-    tournament_view.get_player_id()
-    tournament_view.display_message("Test message")
-    tournament_view.display_players()
-    tournament_view.display_round_matches()
-    tournament_view.display_match_result_form()
+    """Test the TournamentView class."""
+    # tournament_view = TournamentView()
+    # #tournament_view.display_tournament_menu()
+    # #tournament_view.get_tournament_data()
+    # tournament_view.display_tournaments()
+    # tournament_view.get_player_id()
+    # tournament_view.display_message("Test message")
+    # tournament_view.display_players()
+    # tournament_view.display_round_matches()
+    # tournament_view.display_match_result_form()
     

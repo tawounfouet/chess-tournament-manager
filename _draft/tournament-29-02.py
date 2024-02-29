@@ -1,6 +1,4 @@
 from tinydb import TinyDB, Query
-import uuid
-
 
 from models.player import Player
 from models.round import Round
@@ -14,11 +12,34 @@ from views.tournament import TournamentView
 from datetime import datetime
 import random
 
+# Affecter la lister des match
+# printer les match
+# saisi des résultats (score) du tournois
+# tirer les match du round 2
+# Creation des matchs du rouund
+# saisi le resulat des match avec 3 options
+# voulez-vous lancer le round suivant
+# voulez-vous saisi r les résultats
+
+# creation du round, affectation des match, saisi des résulats --> En boucle
+
+# à la fin du dernier round montrer la liste des vainqueurs
+
+
+# Fonction reprise d'un tournois (quel round c'est et dans quel état il est)
+# - Fonctionnalité qui display une liste de tournois
+# - saisi par l'utilisateur de l'ID
+
+# Rapport - une fonctionnamité du tournamentController
+# Gestions des rapports
+
+# créer une fonction dans la TournamentController pour gérer les rapport
+
 
 class TournamentController:
     def __init__(self):
         self.view = TournamentView()
-        self.tournament = None
+        self.model = Tournament
         self.players = Player.get_all_players()
         self.tournaments = Tournament.get_all_tournaments()
         # self.round_controller = RoundController()
@@ -33,62 +54,100 @@ class TournamentController:
             choice = self.view.display_tournament_menu()
 
             if choice == "1":
-                self.create_tournament()
-            elif choice == "2":
                 self.view.display_tournaments(self.tournaments)
+            elif choice == "2":
+                self.create_tournament()
             elif choice == "3":
-                # display tournament info using tournament ID
+                self.view.display_players(self.players)
+            elif choice == "6":
+                self.start_tournament()
+            elif choice == "7":
                 tournament_id = input("Enter tournament ID to load: ")
-                self.view.display_tournament_info(tournament_id)
-
-            elif choice == "4":
-                # consulter la liste des rounds d'un tournoi
-                tournament_id = input("Enter tournament ID to view rounds: ")
-                self.view.display_rounds_list(tournament_id)
+                tournament = self.load_tournament(tournament_id)
+                if tournament:
+                    self.view.display_message(
+                        f"Tournament {tournament.name} loaded successfully."
+                    )
+                    self.display_rounds(tournament)
+                    self.display_matches(tournament)
+                # go back to main menu
                 exit_requested = True
-                
 
             else:
                 self.view.display_message("Invalid choice. Please try again.")
 
     def create_tournament(self):
         tournament_data = self.view.get_tournament_data()
-        self.tournament = Tournament(**tournament_data)
-        
-        
+        # self.model = Tournament(**tournament_data)
+        tournament = Tournament(**tournament_data)
         self.view.display_players(self.players)
+        # Display list of players
+        # players = Player.get_all_players()
+        # self.view.display_players(players)
 
         # Add players to the tournament
-        player_ids = self.view.get_player_ids_to_add()
-        players_to_add = [Player.get_player_by_id(id_db)  for id_db in player_ids]
-        # players_to_add = [player_id for player_id in player_ids]
-        self.tournament.players = players_to_add
+        player_ids = (
+            self.view.get_player_ids_to_add()
+        )  # Assuming this method prompts for player IDs
+        # players_to_add = [Player.get_player_by_id(player_id)  for player_id in player_ids]
+        players_to_add = [player_id for player_id in player_ids]
+        tournament.add_players(players_to_add)
 
-        
-        #print(f"Players: {self.tournament.players}")
-        #self.tournament.save_to_db()
-        
-        #self.tournament.id_db = 
-        #self.tournament.tournament_id = str(uuid.uuid4())
-       
-       
+        # Save tournament to database
+        self.model = tournament  # Initialiser l'attribut self.model
+        self.model.save_to_db()
 
         # Generate rounds
         rounds = self.generate_rounds(players_to_add)
-        self.tournament.rounds = rounds
-        self.tournament.save_to_db()
+        tournament.rounds = rounds
+        tournament.save_to_db()
 
         # Display tournament results
-        self.view.display_message(f"Tournament {self.tournament.name} created successfully.")
+        # self.display_tournament_results()
+        self.view.display_message(f"Tournament {self.model.name} created successfully.")
+
+        # start_round = input("Do you want to start Round 1? (y/n): ")
+        # if start_round.lower() == "y":
+        #     round_1 = rounds[0]
+        #     self.display_round_players(round_1)
+        #     self.add_score_to_tournament(round_1)
+
+        # save_scores = input("Do you want to save the scores? (y/n): ")
+        # if save_scores.lower() == "y":
+        #     self.save_scores_to_tournament(tournament)
 
         start_round = input("Do you want to start Round 1? (y/n): ")
         if start_round.lower() == "y":
-            self.start_round(self.tournament)
+            self.start_round(tournament)
 
+    def start_round(self, tournament):
+        round_1 = tournament.rounds[0]
+        self.view.display_message("Players for Round 1:")
+        for match in round_1.matches:
+            # print(f"{match.player_1.full_name} vs {match.player_2.full_name}")
+            print(f"{match.player_1} vs {match.player_2}")
 
-    
+        save_scores = input("Do you want to save the scores? (y/n): ")
+        if save_scores.lower() == "y":
+            self.save_scores_to_tournament(tournament)
 
+    # def display_round_players(self, round):
+    #     """Display the list of players in a round."""
+    #     players = [match.player_1 for match in round.matches]
+    #     self.view.display_players(players)
 
+    def display_round_players(self, round):
+        """Display the players for a specific round."""
+        print(f"Players for {round.name}:")
+        for match in round.matches:
+            if match.player_2:
+                print(f"{match.player_1.full_name} vs {match.player_2.full_name}")
+            else:
+                print(f"{match.player_1.full_name} (Bye)")
+
+    def display_tournament_results(self):
+        """Display tournament results"""
+        self.view.display_tournament_results(self.model)
 
     def generate_rounds(self, players):
         """Generate rounds with matches for the tournament."""
@@ -113,33 +172,6 @@ class TournamentController:
 
         return rounds
 
-
-    def start_round(self, tournament):
-        round_1 = tournament.rounds[0]
-        self.view.display_message("Players for Round 1:")
-        for match in round_1.matches:
-            # print(f"{match.player_1.full_name} vs {match.player_2.full_name}")
-            print(f"{match.player_1} vs {match.player_2}")
-
-        save_scores = input("Do you want to save the scores? (y/n): ")
-        if save_scores.lower() == "y":
-            self.save_scores_to_tournament(tournament)
-
-    def display_round_players(self, round):
-        """Display the players for a specific round."""
-        print(f"Players for {round.name}:")
-        for match in round.matches:
-            if match.player_2:
-                print(f"{match.player_1.full_name} vs {match.player_2.full_name}")
-            else:
-                print(f"{match.player_1.full_name} (Bye)")
-
-    def display_tournament_results(self):
-        """Display tournament results"""
-        self.view.display_tournament_results(self.model)
-
-
-
     def generate_matches(self, players):
         """Generate matches for a round."""
         matches = []
@@ -149,8 +181,8 @@ class TournamentController:
         random.shuffle(players)
 
         for i in range(0, num_players, 2):
-            player_1 = players[i]["id_db"]
-            player_2 = players[i + 1]["id_db"] if i + 1 < num_players else None
+            player_1 = players[i]
+            player_2 = players[i + 1] if i + 1 < num_players else None
             match = Match(player_1=player_1, player_2=player_2)
             matches.append(match)
 
@@ -177,9 +209,40 @@ class TournamentController:
 
     #     return matches
 
+    # def add_score_to_tournament(self, round: Round):
+    #     """Add scores to matches in a round."""
+    #     for match in round.matches:
+    #         choice = input(f"Enter result for {match.player_1.full_name} vs {match.player_2.full_name}: "
+    #                        "1 for Player 1, 2 for Player 2, 3 for Draw: ")
+    #         if choice == "1":
+    #             match.p1_score = 1
+    #         elif choice == "2":
+    #             match.p2_score = 1
+    #         elif choice == "3":
+    #             match.p1_score = 0.5
+    #             match.p2_score = 0.5
+
+    # def add_score_to_tournament(self, round):
+    #     """Run a round and prompt for scores."""
+    #     for match in round.matches:
+    #         if match.player_2:
+    #             choice = input(f"Enter result for {match.player_1.full_name} vs {match.player_2.full_name}: "
+    #                         "1 for Player 1, 2 for Player 2, 3 for Draw: ")
+    #             if choice == "1":
+    #                 match.p1_score = 1
+    #             elif choice == "2":
+    #                 match.p2_score = 1
+    #             elif choice == "3":
+    #                 match.p1_score = 0.5
+    #                 match.p2_score = 0.5
+
+    # def save_scores_to_tournament(self, tournament):
+    #     """Save scores to the tournament."""
+    #     for round in tournament.rounds:
+    #         for match in round.matches:
+    #             match.save_to_db()
 
     def save_scores_to_tournament(self, tournament):
-        """Run a round and prompt for scores."""
         for round in tournament.rounds:
             for match in round.matches:
                 # choice = input(f"Enter result for {match.player_1.full_name} vs {match.player_2.full_name}: "
@@ -194,6 +257,8 @@ class TournamentController:
                 elif choice == "3":
                     match.p1_score = 0.5
                     match.p2_score = 0.5
+
+                # match.save_to_db()
 
                 # Update database records with new scores
                 self.update_match_record_in_database(
@@ -265,51 +330,6 @@ class TournamentController:
             for match in round.matches:
                 # print(f"  {match.player_1.full_name} vs {match.player_2.full_name}")
                 print(f"  {match.player_1} vs {match.player_2}")
-
-
-    # def display_rounds_list(self, tournament_id):
-    #     """Display the list of rounds for a tournament."""
-    #     db_tournaments = TinyDB("data/tournaments.json", indent=4)
-    #     tournaments_table = db_tournaments.table("tournaments")
-
-    #     # Recherche du tournoi par son identifiant
-    #     tournament_record = tournaments_table.get(doc_id=tournament_id)
-    #     if tournament_record:
-    #         rounds = tournament_record.get('rounds', [])
-    #         if rounds:
-    #             print(f"Rounds for Tournament {tournament_record['name']}:")
-    #             for round_data in rounds:
-    #                 print(f"- {round_data['name']}")
-    #         else:
-    #             print("No rounds found for this tournament.")
-    #     else:
-    #         print("Tournament not found.")
-
-
-    # def display_rounds_list(self, tournament_id):
-    #     """Display the list of rounds and matches for a tournament."""
-    #     db_tournaments = TinyDB("data/tournaments.json", indent=4)
-    #     tournaments_table = db_tournaments.table("tournaments")
-
-    #     # Recherche du tournoi par son identifiant
-    #     tournament_record = tournaments_table.get(doc_id=tournament_id)
-    #     if tournament_record:
-    #         rounds = tournament_record.get('rounds', [])
-    #         if rounds:
-    #             print(f"Rounds for Tournament {tournament_record['name']}:")
-    #             for round_data in rounds:
-    #                 print(f"- {round_data['name']}")
-    #                 matches = round_data.get('matches', [])
-    #                 if matches:
-    #                     print("  Matches:")
-    #                     for match_data in matches:
-    #                         print(f"    {match_data['player_1']} vs {match_data['player_2']}")
-    #                 else:
-    #                     print("  No matches found for this round.")
-    #         else:
-    #             print("No rounds found for this tournament.")
-    #     else:
-    #         print("Tournament not found.")
 
 
 if __name__ == "__main__":

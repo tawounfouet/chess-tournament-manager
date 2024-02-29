@@ -5,7 +5,7 @@ from datetime import datetime
 db_tournaments = TinyDB("db_tournaments.json").table("tournaments")
 
 
-class MatchController:
+class Match:
     def __init__(self, rounds_number, current_round, tournament_doc_id):
         self.current_time = datetime.now().strftime("%d/%m/%Y-%H:%M")
         self.view = MatchView()

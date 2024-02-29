@@ -1,6 +1,7 @@
 
 from tinydb import TinyDB, Query
-import random
+import random 
+from datetime import datetime
 
 # Initialize TinyDB database with the specified path
 db_players = TinyDB("data/players.json", indent=4)
@@ -11,12 +12,14 @@ class Player:
 
     players_table = db_players.table("players")
 
-    def __init__(self, first_name, last_name, date_of_birth, player_id, score=0):
+    def __init__(self, first_name, last_name, date_of_birth, player_id, score=0, id_db = None):
         self.first_name = first_name
         self.last_name = last_name
-        self.date_of_birth = date_of_birth
+        self.date_of_birth = date_of_birth 
+        self.date_of_birth = datetime.strptime(date_of_birth, "%Y-%m-%d")
         self.player_id = player_id
         self.score = score
+        self.id_db = id_db  
 
 
     def __str__(self):
@@ -35,8 +38,10 @@ class Player:
             "first_name": self.first_name,
             "last_name": self.last_name,
             "date_of_birth": self.date_of_birth,
+            "date_of_birth": self.date_of_birth.strftime("%Y-%m-%d"),
             "player_id": self.player_id,
-            "score": self.score
+            "score": self.score,
+            "id_db": self.id_db,      
         }
   
 
@@ -47,11 +52,6 @@ class Player:
         return Player(**data)
     
     
-    # def save_to_db(self):
-    #     """Save player serialized data to the TinyDB database"""
-    #     print(f"Saving player {self.player_id} - {self.full_name} to the database")
-    #     self.players_table.insert(self.serialize())
-    #     print("Player saved successfully")
 
     def save_to_db(self):
         """Save player serialized data to the TinyDB database"""
@@ -67,8 +67,8 @@ class Player:
         print("Player updated successfully")
 
     @classmethod
-    def get_player_by_id(cls, player_id):
-        """Find a player by ID"""
+    def get_player_by_nat_id(cls, player_id):
+        """Return player object."""
         player = cls.players_table.get(Query().player_id == player_id)
         if player:
             return cls.deserialize(player)
@@ -79,37 +79,39 @@ class Player:
     def get_all_players(cls):
         """Get all players"""
         players_data = cls.players_table.all()
+        for player in players_data:
+            player["id_db"] = player.doc_id
+
         if players_data:
             return [cls.deserialize(player) for player in players_data]
         else:
             return []
-  
+        
+    @classmethod
+    def get_player_by_id(self, id_db):
+        """Return a player dict matching the id_db (id_db = doc_id), add the id_db in the record"""
+        record = self.players_table.get(doc_id=id_db)
+        if record is not None:
+            record["id_db"] = record.doc_id
+        return record
+       
 if __name__ == "__main__":
     print("Executing player.py")
-    # # Test the Player class
-    player1 = Player("John", "Doe", "1990-01-01", "JD001")
-    player1.save_to_db()
+    # # # Test the Player class
+    # player1 = Player("John", "Doe", "1980-01-01", "JD001")
+    # player2 = Player("Jane", "Smith", "1990-01-01", "JS001")
+    # player3 = Player("Alice", "Johnson", "2000-01-01", "AJ001")
+    # player4 = Player("Bob", "Brown", "2010-01-01", "BB001")
+    # player5 = Player("Charlie", "Davis", "2020-01-01", "CD001")
+    # player6 = Player("Eve", "Wilson", "2030-01-01", "EW001")
 
-    player2 = Player("Jane", "Smith", "1985-05-15", "JS001")
-    player2.save_to_db()
-
-    player3 = Player("Alice", "Brown", "1995-12-25", "AB001")
-    player3.save_to_db()
-
-    player4 = Player("Bob", "Johnson", "1980-10-10", "BJ001")
-    player4.save_to_db()
-
-    player5 = Player("Charlie", "Davis", "1992-03-20", "CD001")
-    player5.save_to_db()
-
-    player6 = Player("David", "Wilson", "1998-08-30", "DW001")
-    player6.save_to_db()
-
-    player7 = Player("Eve", "Garcia", "1993-07-05", "EG001")
-    player7.save_to_db()
-
-    player8 = Player("Frank", "Martinez", "1987-04-12", "FM001")
-    player8.save_to_db()
-
+    # # # Save players to the database
+    # player1.save_to_db()
+    # player2.save_to_db()
+    # player3.save_to_db()
+    # player4.save_to_db()
+    # player5.save_to_db()
+    # player6.save_to_db()
+  
 
  

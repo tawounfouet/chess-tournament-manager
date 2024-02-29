@@ -55,6 +55,13 @@
             "date_of_birth": "1987-04-12",
             "player_id": "FM001",
             "score": 0
+        },
+        "9": {
+            "first_name": "Thomas",
+            "last_name": "AWOUNFOUET",
+            "date_of_birth": "1992-03-20",
+            "player_id": "TA002",
+            "score": 0
         }
     }
 }

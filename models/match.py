@@ -1,15 +1,23 @@
-class MatchModel:
-    def __init__(self, name, paired_players, winner):
-        self.name = name
-        self.player1 = paired_players[0]
-        self.player2 = paired_players[1]
-        self.winner = winner
+from tinydb import TinyDB, Query
 
-    def serializer(self):
-        match = {
-            "name": self.name,
-            "players": [self.player1, self.player2],
-            "score": [{self.player1: 0}, {self.player2: 0}],
-            "winner": self.winner,
+
+class Match:
+    def __init__(self, player_1, player_2, p1_score=0, p2_score=0):
+        self.player_1 = player_1
+        self.player_2 = player_2
+        self.p1_score = p1_score
+        self.p2_score = p2_score
+
+    def serialize(self):
+        return {
+            "player_1": self.player_1,
+            "player_2": self.player_2,
+            "p1_score": self.p1_score,
+            "p2_score": self.p2_score,
         }
-        return match
+    
+    def __str__(self):
+        return f"{self.player_1}: {self.p1_score} - {self.p2_score} :{self.player_2}"
+    
+
+ 
