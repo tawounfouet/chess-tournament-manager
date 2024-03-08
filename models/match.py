@@ -1,6 +1,3 @@
-from tinydb import TinyDB, Query
-
-
 class Match:
     def __init__(self, player_1, player_2, p1_score=0, p2_score=0):
         self.player_1 = player_1

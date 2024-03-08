@@ -1,6 +1,5 @@
 
 from tinydb import TinyDB, Query
-import random 
 from datetime import datetime
 
 # Initialize TinyDB database with the specified path
@@ -48,17 +47,21 @@ class Player:
     @classmethod
     def deserialize(cls, data):
         """Deserialize data dictionary to create a Player object - from JSON format(from_dict) to object"""
-        #return cls(data["first_name"],data["last_name"], data["date_of_birth"], data["player_id"])
         return Player(**data)
     
     
 
     def save_to_db(self):
         """Save player serialized data to the TinyDB database"""
-        print(f"Saving player {self.player_id} - {self.full_name} to the database")
+        #print(f"Saving player {self.player_id} - {self.full_name} to the database")
         player_data = self.serialize()
-        self.players_table.insert(player_data)
-        # print(f"Player {self.full_name} created successfully with rank {self.rank}.")
+        if self.player_id:  
+            self.players_table.update(player_data, Query().player_id == self.player_id)
+            print(f"Player {self.full_name} data updated successfully.")
+        else:
+            self.players_table.insert(player_data)
+            # print("Player saved successfully")
+            
 
     def update(self):
         """Update player data in the database"""
@@ -94,6 +97,9 @@ class Player:
         if record is not None:
             record["id_db"] = record.doc_id
         return record
+    
+   
+ 
        
 if __name__ == "__main__":
     print("Executing player.py")

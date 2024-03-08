@@ -1,12 +1,110 @@
 {
     "tournaments": {
         "1": {
-            "tournament_id": "1",
+            "tournament_id": "d01c1ba4-e276-4207-8c0a-e2db14088dee",
+            "name": "test",
+            "location": "Paris",
+            "start_date": "",
+            "end_date": "",
+            "status": "Done",
+            "description": "",
+            "players": [
+                "3",
+                "1",
+                "2",
+                "4"
+            ],
+            "rounds": [
+                {
+                    "name": "Round 1",
+                    "start_date": "2024-02-29 19:05:17",
+                    "end_date": null,
+                    "matches": [
+                        {
+                            "player_1": "4",
+                            "player_2": "1",
+                            "p1_score": 1,
+                            "p2_score": 0
+                        },
+                        {
+                            "player_1": "3",
+                            "player_2": "2",
+                            "p1_score": 0.5,
+                            "p2_score": 0.5
+                        }
+                    ],
+                    "status": ""
+                },
+                {
+                    "name": "Round 2",
+                    "start_date": "2024-02-29 19:05:17",
+                    "end_date": null,
+                    "matches": [
+                        {
+                            "player_1": "3",
+                            "player_2": "1",
+                            "p1_score": 1,
+                            "p2_score": 0
+                        },
+                        {
+                            "player_1": "2",
+                            "player_2": "4",
+                            "p1_score": 0,
+                            "p2_score": 1
+                        }
+                    ],
+                    "status": ""
+                },
+                {
+                    "name": "Round 3",
+                    "start_date": "2024-02-29 19:05:17",
+                    "end_date": null,
+                    "matches": [
+                        {
+                            "player_1": "3",
+                            "player_2": "2",
+                            "p1_score": 1,
+                            "p2_score": 0
+                        },
+                        {
+                            "player_1": "4",
+                            "player_2": "1",
+                            "p1_score": 1,
+                            "p2_score": 0
+                        }
+                    ],
+                    "status": ""
+                },
+                {
+                    "name": "Round 4",
+                    "start_date": "2024-02-29 19:05:17",
+                    "end_date": null,
+                    "matches": [
+                        {
+                            "player_1": "3",
+                            "player_2": "1",
+                            "p1_score": 1,
+                            "p2_score": 0
+                        },
+                        {
+                            "player_1": "2",
+                            "player_2": "4",
+                            "p1_score": 0,
+                            "p2_score": 1
+                        }
+                    ],
+                    "status": ""
+                }
+            ],
+            "nb_rounds": 4,
+            "id_db": null
+        },
+        "2": {
+            "tournament_id": "3ed79b95-493e-4151-ab5e-59c769376b3c",
             "name": "",
             "location": "",
             "start_date": "",
             "end_date": "",
-            "current_round": 1,
             "status": "Done",
             "description": "",
             "players": [
@@ -16,19 +114,62 @@
             "rounds": [
                 {
                     "name": "Round 1",
-                    "start_date": "2024-02-29",
+                    "start_date": "2024-03-07 20:39:52",
                     "end_date": null,
                     "matches": [
                         {
                             "player_1": "2",
                             "player_2": "1",
-                            "p1_score": 0.5,
-                            "p2_score": 0.5
+                            "p1_score": 1,
+                            "p2_score": 0
+                        }
+                    ],
+                    "status": ""
+                },
+                {
+                    "name": "Round 2",
+                    "start_date": "2024-03-07 20:39:52",
+                    "end_date": null,
+                    "matches": [
+                        {
+                            "player_1": "1",
+                            "player_2": "2",
+                            "p1_score": 1,
+                            "p2_score": 0
+                        }
+                    ],
+                    "status": ""
+                },
+                {
+                    "name": "Round 3",
+                    "start_date": "2024-03-07 20:39:52",
+                    "end_date": null,
+                    "matches": [
+                        {
+                            "player_1": "1",
+                            "player_2": "2",
+                            "p1_score": 1,
+                            "p2_score": 0
+                        }
+                    ],
+                    "status": ""
+                },
+                {
+                    "name": "Round 4",
+                    "start_date": "2024-03-07 20:39:52",
+                    "end_date": null,
+                    "matches": [
+                        {
+                            "player_1": "2",
+                            "player_2": "1",
+                            "p1_score": 1,
+                            "p2_score": 0
                         }
                     ],
                     "status": ""
                 }
             ],
+            "nb_rounds": 4,
             "id_db": null
         }
     }

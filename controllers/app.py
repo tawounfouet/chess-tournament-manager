@@ -9,7 +9,7 @@ sys.path.append(ROOT_DIR)
 from views.view_app import ViewApp
 from chess_game.controllers.tournament import TournamentController
 from chess_game.controllers.player import PlayerController
-# from chess_game.controllers.round import RoundController
+
 
 
 class AppController:
@@ -19,7 +19,6 @@ class AppController:
         """Initialize the AppController class."""
         self.view_app = ViewApp()
         self.tournament_controller = TournamentController()
-        #self.round_controller = RoundController()
         self.player_controller = PlayerController()
 
     def start(self):

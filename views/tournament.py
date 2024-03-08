@@ -19,6 +19,7 @@ class TournamentView:
             print("6. " + Fore.BLUE + "Exit" + Style.RESET_ALL)
 
             choice = input("\nEnter your choice: ")
+            #print("\n")
 
             if choice in ["1", "2", "3", "4", "5", "6"]:
                 return choice
@@ -26,22 +27,24 @@ class TournamentView:
                 print("Invalid choice. Please try again.")
 
     def get_tournament_data(self):
-        tournament_id = input("Enter tournament id: ")
-        name = input("Enter tournament name: ")
-        location = input("Enter tournament location: ")
-        start_date = input("Enter tournament start date: ")
-        end_date = input("Enter tournament end date: ")
-        # nb_rounds = int(input("Enter the number of rounds: "))  # Convert input to integer
+        #tournament_id = input("- Enter tournament id: ")
+        name = input("- Enter tournament name: ")
+        location = input("- Enter tournament location: ")
+        start_date = input("- Enter tournament start date: ")
+        end_date = input("- Enter tournament end date: ")
+        # Ask the user for the number of rounds
+        rounds_input = input("- Enter the number of rounds: ")
+        nb_rounds = int(rounds_input) if rounds_input else 4
         # nb_of_players = int(input("Enter the number of players: "))  # Convert input to integer
-        description = input("Enter tournament description: ")
+        description = input("- Enter tournament description: ")
 
         details = {
-            "tournament_id": tournament_id,
+            #"tournament_id": tournament_id,
             "name": name,
             "location": location,
             "start_date": start_date,
             "end_date": end_date,
-            #"nb_rounds": nb_rounds,
+            "nb_rounds": nb_rounds,
             "description": description,
         }
 
@@ -73,7 +76,7 @@ class TournamentView:
                #tournament.start_date,
                 #tournament.end_date,
                 tournament.number_of_players,
-                tournament.number_of_rounds,
+                tournament.nb_rounds,
                 #tournament.current_round,
                 #tournament.description,
             ]
@@ -94,8 +97,8 @@ class TournamentView:
                 #start_date,
                 #end_date,
                 num_players,
-                num_rounds,
-                #nb_rounds,
+                #num_of_rounds,
+                nb_rounds,
                 #actual_round,
                 #description,
             ]
@@ -106,8 +109,8 @@ class TournamentView:
                 #start_date,
                 # end_date,
                 num_players,
-                num_rounds,
-                #nb_rounds,
+                #num_of_rounds,
+                nb_rounds,
                 #actual_round,
                 #description,
             ) in tournament_data
@@ -135,6 +138,7 @@ class TournamentView:
             ["Status", tournament_data["status"]],
             ["Description", tournament_data["description"]],
             ["Players", "\n".join(tournament_data["players"])],
+            ["Number of Rounds", tournament_data["nb_rounds"]],
             ["Rounds", "\n".join([round_info["name"] for round_info in tournament_data["rounds"]])]
         ]
 
@@ -149,17 +153,31 @@ class TournamentView:
         player_id = input("Enter player's id: ")
         return player_id
     
+    # def get_player_ids_to_add(self):
+    #     # rahouter le nombre de joueur en parametre et plutot faire une boucle for pour demander le nombre de joueur
+    #     """Prompt user to enter player IDs to add to the tournament"""
+    #     player_ids = []
+    #     while True:
+    #         player_id = input("Enter player ID to add (press Enter to finish): ")
+    #         if not player_id:  # Check if user pressed Enter without entering an ID
+    #             break
+    #         player_ids.append(player_id)
+    #     return player_ids
     def get_player_ids_to_add(self):
-        # rahouter le nombre de joueur en parametre et plutot faire une boucle for pour demander le nombre de joueur
         """Prompt user to enter player IDs to add to the tournament"""
+        num_players_to_add = int(input("Enter the number of players to add: "))
         player_ids = []
-        while True:
-            player_id = input("Enter player ID to add (press Enter to finish): ")
-            if not player_id:  # Check if user pressed Enter without entering an ID
-                break
+
+        print(f"\n{Fore.YELLOW}Enter the IDs of {num_players_to_add} players:{Style.RESET_ALL}")
+
+        for i in range(num_players_to_add):
+            player_id = input(f"\tEnter ID for player {i+1}: ")
             player_ids.append(player_id)
+        
+        #print(f"\n{Fore.GREEN}Players added: {player_ids}{Style.RESET_ALL}\n")
         return player_ids
-    
+
+
 
     def display_message(self, message):
         print(message)
@@ -176,7 +194,7 @@ class TournamentView:
                 player.player_id,
                 player.first_name,
                 player.last_name,
-                player.date_of_birth,
+                player.date_of_birth.strftime('%Y-%m-%d'), 
                 player.score,
             ]
             for player in players
@@ -199,7 +217,16 @@ class TournamentView:
             for player_id, first_name, last_name, date_of_birth, score in player_data
         ]
 
-        print(tabulate(colorized_player_data, headers=colorized_headers))
+        # Centered and styled title
+        title = f"{Style.BRIGHT}{Fore.BLUE}List of Players:{Style.RESET_ALL}"
+        title_width = len(title)
+        padding = (80 - title_width) // 2
+        formatted_title = f"{' ' * padding}{title}{' ' * padding}"
+
+        print("\n")  # Add an empty line before the title
+        print(formatted_title.center(80))  # Centered title
+        print(tabulate(colorized_player_data, headers=colorized_headers, tablefmt="fancy_grid"))
+        print("\n")  # Add an empty line after the player list
 
     
 
