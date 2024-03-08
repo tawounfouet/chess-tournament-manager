@@ -8,3 +8,7 @@ __pycache__/
 
 .venv/
 __venv/
+
+draft/
+
+# Distribution / packaging
